@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 
 import { SwaggerModule } from '@nestjs/swagger';
-import { swaggerOptions } from './swagger.options';
+import { swaggerOptions } from 'config';
 
-import { AppModule } from './app.module';
+import { AppModule } from 'app.module';
 
 import * as process from 'process';
 
