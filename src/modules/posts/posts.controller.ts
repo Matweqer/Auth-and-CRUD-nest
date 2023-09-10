@@ -19,12 +19,12 @@ import { PostRelatedToUserGuard } from './guards';
 
 import { JwtPayload } from 'types';
 
-@UseGuards(AuthGuard('jwt'))
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   create(@Body() createPostDto: CreatePostDto, @Request() req) {
     return this.postsService.create(createPostDto, req.user as JwtPayload);
@@ -40,7 +40,7 @@ export class PostsController {
     return this.postsService.findOne(id);
   }
 
-  @UseGuards(PostRelatedToUserGuard)
+  @UseGuards(AuthGuard('jwt'), PostRelatedToUserGuard)
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -49,7 +49,7 @@ export class PostsController {
     return this.postsService.update(id, updatePostDto);
   }
 
-  @UseGuards(PostRelatedToUserGuard)
+  @UseGuards(AuthGuard('jwt'), PostRelatedToUserGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.remove(id);
