@@ -6,20 +6,25 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 import { PostsService } from './posts.service';
 import { CreatePostDto, UpdatePostDto } from './dto';
+import { JwtPayload } from 'types';
 
+@UseGuards(AuthGuard('jwt'))
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  create(@Body() createPostDto: CreatePostDto, @Request() req) {
+    return this.postsService.create(createPostDto, req.user as JwtPayload);
   }
 
   @Get()
