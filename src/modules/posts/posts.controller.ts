@@ -8,12 +8,15 @@ import {
   Delete,
   Request,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { PostsService } from './posts.service';
 import { CreatePostDto, UpdatePostDto } from './dto';
+import { PostRelatedToUserGuard } from './guards';
+
 import { JwtPayload } from 'types';
 
 @UseGuards(AuthGuard('jwt'))
@@ -33,17 +36,22 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.findOne(id);
   }
 
+  @UseGuards(PostRelatedToUserGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updatePostDto: UpdatePostDto,
+  ) {
     return this.postsService.update(+id, updatePostDto);
   }
 
+  @UseGuards(PostRelatedToUserGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.postsService.remove(+id);
   }
 }
