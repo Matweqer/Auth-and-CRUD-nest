@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
-import { LoginDto, RegistrationDto } from './dto';
+import { LoginDto, RefreshTokensDto, RegistrationDto } from './dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -19,8 +19,8 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Get('refresh-tokens')
-  refreshTokens() {
-    return this.authService.refreshTokens();
+  @Post('refresh-tokens')
+  refreshTokens(@Body() refreshTokensDto: RefreshTokensDto) {
+    return this.authService.refreshTokens(refreshTokensDto);
   }
 }
