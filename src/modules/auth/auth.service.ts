@@ -8,6 +8,7 @@ import { JwtService } from './jwt.service';
 import { User } from './entities/user.entity';
 
 import { LoginDto, RefreshTokensDto, RegistrationDto } from './dto';
+
 import { JwtPayload } from 'types';
 
 @Injectable()

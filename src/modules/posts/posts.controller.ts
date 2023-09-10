@@ -43,15 +43,15 @@ export class PostsController {
   @UseGuards(PostRelatedToUserGuard)
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
   ) {
-    return this.postsService.update(+id, updatePostDto);
+    return this.postsService.update(id, updatePostDto);
   }
 
   @UseGuards(PostRelatedToUserGuard)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: string) {
-    return this.postsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.remove(id);
   }
 }
